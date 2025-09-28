@@ -27,5 +27,5 @@ audio:
 onnx:
   checkpoint_path: ???
   save_path: "saved_models"
-  onnx_file_name: "model.onnx"
+  onnx_file_name: "model_${model.backbone}_${now:%Y-%m-%d_%H-%M-%S}.onnx"
   verify_onnx: true

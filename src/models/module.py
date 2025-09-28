@@ -1,16 +1,19 @@
 import pytorch_lightning as pl
-import torch
 import torch.nn.functional as F
 from torch import optim
 from torchmetrics import Accuracy
-from src.models.backbone import CNNBackbone
+
+from src.models.utils import model_map
 
 class KeywordSpotter(pl.LightningModule):
     def __init__(self, num_classes=2, backbone="resnet18", learning_rate=0.001):
         super().__init__()
         self.save_hyperparameters()
                 
-        self.model = CNNBackbone(backbone, num_classes)
+        if backbone not in model_map.keys():
+            raise RuntimeError(f"There are no known backbone model {backbone}")
+        self.model = model_map[backbone](num_classes)
+        
         self.accuracy = Accuracy(task="multiclass", num_classes=num_classes)
 
     def forward(self, x):
