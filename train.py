@@ -1,10 +1,14 @@
 import hydra
 from omegaconf import DictConfig
+import thop
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
 from src.models.module import KeywordSpotter
 from src.dataset.module import AudioDataModule
 from pytorch_lightning import seed_everything
+import torch
+
+from logger import local_logger
 
 @hydra.main(version_base=None, config_path="./configs", config_name="kws.yaml")
 def main(cfg: DictConfig):
@@ -19,6 +23,42 @@ def main(cfg: DictConfig):
     
     data_module = AudioDataModule(cfg.data)
     logger = TensorBoardLogger("logs", name="keyword_spotter")
+    
+    # Check an amount of trainable parameters and MACs
+    data_module = AudioDataModule(cfg.data)
+    data_module.setup()
+    dataloader = data_module.train_dataloader()
+    
+    for batch in dataloader:
+        # we're getting batch from train dataloader, that returns a batch of data and labels
+        # the first element of batch (batch[0]) is a batch of data (3 dimention for audio)
+        # the second one is a batch of labels (batch[1]) -- one dimention tensor
+        # So, here to obtain a shape of input data, we have to take the batch of data batch[0]
+        # and next take the first element in this batch -- batch[0][0]
+        input_dim = batch[0][0].shape
+        break
+    
+    # Создание примера входных данных
+    # Actually, model is waiting for a 4d data input:
+    # 3d audio tensor data and the batch of such 3d examples,
+    # the result is a 4d data
+    sample_inputs = torch.randn(input_dim)[None, :, :, :]
+    
+    macs, params = thop.profile(
+        # here we have to use a backbone model with classification head, not a pytorch loghtning wrapper
+        model.model, 
+        inputs=(sample_inputs,),
+    )
+    
+    local_logger.info(f"MACs: {macs}")
+    local_logger.info(f"Params: {params}")
+    
+    if macs > 1e6:
+        local_logger.critical(f"The number of multiply-accumulate operations is grater than available limit {macs}>1e6")
+        return
+    if params > 1e4:
+        local_logger.critical(f"The number of parameters in the model is grater than available limit {macs}>1e6")
+        return
 
     # Тренер
     trainer = pl.Trainer(
