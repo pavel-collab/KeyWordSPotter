@@ -26,3 +26,14 @@ python3 to_onnx.py ++onnx.checkpoint_path=./logs/keyword_spotter/version_0/check
 ```
 netron ./saved_model/model.onnx
 ```
+
+## Make a prediction on the saved onnx model
+Notice: all of the dataloaders have been already set to import test data for prediction.
+```
+python3 ./predict.py
+```
+
+## Submit prediction to kaggle
+```
+kaggle competitions submit -c keyword-spotting-mipt-2025 -f submission.csv -m "Message"
+```

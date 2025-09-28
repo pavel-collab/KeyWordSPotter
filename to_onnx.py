@@ -49,20 +49,21 @@ def main(cfg: DictConfig):
         os.mkdir(onnx_path)
     onnx_path = onnx_path / cfg.onnx.onnx_file_name    
     
-    torch.onnx.export(
-        model,                     # Модель для экспорта
-        example_input,            # Пример входных данных
-        onnx_path,                # Путь для сохранения ONNX файла
-        input_names=["input"],    # Имя входного тензора
-        output_names=["output"],  # Имя выходного тензора
-        dynamic_axes={            # Настройка динамических осей
-            "input": {0: "batch_size"},
-            "output": {0: "batch_size"}
-        },
-        opset_version=11,         # Версия ONNX opset:cite[1]:cite[9]
-        export_params=True,       # Сохранять веса параметров в файле:cite[2]
-        do_constant_folding=True  # Выполнять свертку констант для оптимизации:cite[2]
-    )
+    with torch.no_grad():
+        torch.onnx.export(
+            model,                     # Модель для экспорта
+            example_input,            # Пример входных данных
+            onnx_path,                # Путь для сохранения ONNX файла
+            input_names=["input"],    # Имя входного тензора
+            output_names=["output"],  # Имя выходного тензора
+            dynamic_axes={            # Настройка динамических осей
+                "input": {0: "batch_size"},
+                "output": {0: "batch_size"}
+            },
+            opset_version=11,         # Версия ONNX opset:cite[1]:cite[9]
+            export_params=True,       # Сохранять веса параметров в файле:cite[2]
+            do_constant_folding=True  # Выполнять свертку констант для оптимизации:cite[2]
+        )
 
     print(f"Модель успешно экспортирована в {onnx_path}")
 

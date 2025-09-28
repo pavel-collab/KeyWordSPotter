@@ -25,7 +25,7 @@ audio:
   channels: 1
 
 onnx:
-  checkpoint_path: "./logs/keyword_spotter/version_0/checkpoints/best_epoch=08_val_acc=0.90.ckpt"
+  checkpoint_path: ???
   save_path: "saved_models"
   onnx_file_name: "model.onnx"
   verify_onnx: true

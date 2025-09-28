@@ -26,8 +26,10 @@ class AudioDataset(Dataset):
         """Загрузка списка файлов и меток"""
         file_list = []
         manifest_df = pd.read_csv(self.manifest_path.absolute())
-        # shafle values in dataframe before train the model
-        manifest_df = manifest_df.sample(frac=1).reset_index(drop=True)
+        
+        # shafle values in dataframe before train the model (only for train and validation)
+        if not self.test:
+            manifest_df = manifest_df.sample(frac=1).reset_index(drop=True)
         
         if not self.test:
             for label, path in zip(manifest_df.label, manifest_df.path):
