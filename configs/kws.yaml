@@ -3,8 +3,9 @@ defaults:
 
 data:
   sample_rate: 16000
-  n_fft: 512
+  n_fft: 400
   hop_length: 256
+  win_length: 400
   n_mels: 64
   batch_size: 32
   num_workers: 1

@@ -6,7 +6,7 @@ from pathlib import Path
 from .utils import label2id
 
 class AudioDataset(Dataset):
-    def __init__(self, manifest_path, sample_rate=16000, n_fft=512, hop_length=256, n_mels=64, test: bool = False):
+    def __init__(self, manifest_path, sample_rate=16000, n_fft=512, hop_length=256, win_length=400, n_mels=64, test: bool = False):
         self.manifest_path = Path(manifest_path)
         self.parent_data_path = self.manifest_path.parent
         assert(self.manifest_path.exists())
@@ -17,6 +17,7 @@ class AudioDataset(Dataset):
         self.audio_processor = AudioProcessor(
             sample_rate=sample_rate,
             n_fft=n_fft,
+            win_length=win_length,
             hop_length=hop_length,
             n_mels=n_mels
         )
