@@ -8,7 +8,13 @@ from src.dataset.module import AudioDataModule
 from pytorch_lightning import seed_everything
 import torch
 
+import warnings
+
 from logger import local_logger
+
+# turn off the UserWarnings because lots of them are talking about 
+# library function refactoring, last or future deprecations
+warnings.filterwarnings('ignore', category=UserWarning)
 
 @hydra.main(version_base=None, config_path="./configs", config_name="kws.yaml")
 def main(cfg: DictConfig):
@@ -53,12 +59,13 @@ def main(cfg: DictConfig):
     local_logger.info(f"MACs: {macs}")
     local_logger.info(f"Params: {params}")
     
-    if macs > 1e6:
-        local_logger.critical(f"The number of multiply-accumulate operations is grater than available limit {macs}>1e6")
-        return
-    if params > 1e4:
-        local_logger.critical(f"The number of parameters in the model is grater than available limit {macs}>1e6")
-        return
+    if cfg.model.check_limits:
+        if macs > 1e6:
+            local_logger.critical(f"The number of multiply-accumulate operations for model {cfg.model.backbone} is grater than available limit {macs}>1e6")
+            return
+        if params > 1e4:
+            local_logger.critical(f"The number of parameters for model {cfg.model.backbone} is grater than available limit {macs}>1e6")
+            return
 
     # Тренер
     trainer = pl.Trainer(

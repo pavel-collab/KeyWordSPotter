@@ -14,6 +14,7 @@ model:
   num_classes: 5
   backbone: "resnet18"
   learning_rate: 0.001
+  check_limits: true # ограничение на количество параметров и количество математических операций
 
 training:
   max_epochs: 10

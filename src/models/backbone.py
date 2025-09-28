@@ -3,13 +3,13 @@ import torch.nn as nn
 import torchvision.models as models
 
 class ResNet18Backbone(nn.Module):
-    def __init__(self, backbone: str = "resnet18", num_classes: int = 2, in_channels: int = 1):
+    def __init__(self, num_classes: int = 2, in_channels: int = 1):
         super().__init__()
                 
         # Загружаем предобученную модель
         # self.backbone = getattr(models, backbone)(pretrained=True)
         #! parameter pretrained is depricated now, it's recommended to use weights instead
-        self.backbone = getattr(models, backbone)(weights='DEFAULT')
+        self.backbone = getattr(models, "resnet18")(weights='DEFAULT')
         
         # Адаптируем первый слой для аудио (1 входной канал вместо 3)
         original_conv1 = self.backbone.conv1
