@@ -1,0 +1,7 @@
+.venv
+*.zip
+data
+outputs
+__pycache__
+tmp.py
+logs

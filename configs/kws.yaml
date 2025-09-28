@@ -1,0 +1,25 @@
+defaults:
+  - _self_
+
+data:
+  sample_rate: 16000
+  n_fft: 512
+  hop_length: 256
+  n_mels: 64
+  batch_size: 32
+  num_workers: 1
+  dataset_path: "./data"
+
+model:
+  num_classes: 5
+  backbone: "resnet18"
+  learning_rate: 0.001
+
+training:
+  max_epochs: 10
+  accelerator: "cpu"
+  devices: 1
+
+audio:
+  chunk_duration: 2.0  # длительность аудиосегмента в секундах
+  channels: 1
