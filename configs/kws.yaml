@@ -23,3 +23,9 @@ training:
 audio:
   chunk_duration: 2.0  # длительность аудиосегмента в секундах
   channels: 1
+
+onnx:
+  checkpoint_path: "./logs/keyword_spotter/version_0/checkpoints/best_epoch=08_val_acc=0.90.ckpt"
+  save_path: "saved_models"
+  onnx_file_name: "model.onnx"
+  verify_onnx: true
