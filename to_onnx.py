@@ -28,11 +28,23 @@ def main(cfg: DictConfig):
     checkpoint_path = Path(cfg.onnx.checkpoint_path)
     assert(checkpoint_path.exists())
 
-    model = KeywordSpotter.load_from_checkpoint(
-        checkpoint_path, 
-        input_dim=input_dim, 
-        output_dim=output_dim
+    # model = KeywordSpotter.load_from_checkpoint(
+    #     checkpoint_path, 
+    #     input_dim=input_dim, 
+    #     output_dim=output_dim,
+    #     num_classes=cfg.model.num_classes,
+    #     backbone=cfg.model.backbone
+    # )
+    
+    model = KeywordSpotter(
+        num_classes=cfg.model.num_classes,
+        backbone=cfg.model.backbone,
+        learning_rate=cfg.model.learning_rate
     )
+    # Ручная загрузка state_dict
+    checkpoint = torch.load(checkpoint_path)
+    state_dict = checkpoint['state_dict']
+    model.load_state_dict(state_dict, strict=False)
 
     # Установка модели в режим оценки
     model.eval()
