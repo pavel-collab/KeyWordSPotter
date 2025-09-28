@@ -61,7 +61,7 @@ def main(cfg: DictConfig):
     
     if cfg.model.check_limits:
         if macs > 1e6:
-            local_logger.critical(f"The number of multiply-accumulate operations for model {cfg.model.backbone} is grater than available limit {macs}>1e6")
+            local_logger.critical(f"The number of multiply-accumulate operations (MACs) for model {cfg.model.backbone} is grater than available limit {macs}>1e6")
             return
         if params > 1e4:
             local_logger.critical(f"The number of parameters for model {cfg.model.backbone} is grater than available limit {macs}>1e6")

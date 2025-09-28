@@ -4,7 +4,7 @@ defaults:
 data:
   sample_rate: 16000
   n_fft: 400
-  hop_length: 256
+  hop_length: 160
   win_length: 400
   n_mels: 64
   batch_size: 32
@@ -23,7 +23,7 @@ training:
   devices: 1
 
 audio:
-  chunk_duration: 2.0  # длительность аудиосегмента в секундах
+  # chunk_duration: 2.0  # длительность аудиосегмента в секундах
   channels: 1
 
 onnx:
