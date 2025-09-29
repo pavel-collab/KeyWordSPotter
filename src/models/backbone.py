@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 
-class ResNet18Backbone(nn.Module):
+class ResNetBackbone(nn.Module):
     def __init__(self, num_classes: int = 2, in_channels: int = 1):
         super().__init__()
                 
