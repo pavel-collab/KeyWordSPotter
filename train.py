@@ -24,7 +24,8 @@ def main(cfg: DictConfig):
     model = KeywordSpotter(
         num_classes=cfg.model.num_classes,
         backbone=cfg.model.backbone,
-        learning_rate=cfg.model.learning_rate
+        learning_rate=cfg.model.learning_rate,
+        in_features=cfg.model.in_features,
     )
     
     data_module = AudioDataModule(cfg.data)
@@ -45,10 +46,7 @@ def main(cfg: DictConfig):
         break
     
     # Создание примера входных данных
-    # Actually, model is waiting for a 4d data input:
-    # 3d audio tensor data and the batch of such 3d examples,
-    # the result is a 4d data
-    sample_inputs = torch.randn(input_dim)[None, :, :, :]
+    sample_inputs = torch.randn(input_dim)
     
     macs, params = thop.profile(
         # here we have to use a backbone model with classification head, not a pytorch loghtning wrapper

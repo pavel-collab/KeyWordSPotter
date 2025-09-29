@@ -6,13 +6,13 @@ from torchmetrics import Accuracy
 from src.models.utils import model_map
 
 class KeywordSpotter(pl.LightningModule):
-    def __init__(self, num_classes=2, backbone="resnet18", learning_rate=0.001):
+    def __init__(self, num_classes=2, backbone="resnet18", in_features=64, learning_rate=0.001):
         super().__init__()
         self.save_hyperparameters()
                 
         if backbone not in model_map.keys():
             raise RuntimeError(f"There are no known backbone model {backbone}")
-        self.model = model_map[backbone](num_classes)
+        self.model = model_map[backbone](num_classes, in_features=in_features)
         
         self.accuracy = Accuracy(task="multiclass", num_classes=num_classes)
 
