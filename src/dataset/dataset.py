@@ -57,6 +57,13 @@ class AudioDataset(Dataset):
             if not self.test:
                 # Добавляем размерность канала (1 канал для grayscale спектрограммы)
                 # mel_spec shape: [1, n_mels, time_steps]
+                
+                # UPdated: поскольку в этой задаче точно известно, что мы работаем 
+                # с одним каналом, нет смысла тащить первое единичное измерение.
+                # Вместо трехмерного представления данных можно обойтись двумерным,
+                # в таком случае, можно заменить все 2d операции в сверточных сетях
+                # на 1d
+                mel_spec = mel_spec[0]
                 return mel_spec, torch.tensor(label, dtype=torch.long)
             else:
                 return mel_spec 

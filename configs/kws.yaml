@@ -16,6 +16,7 @@ model:
   backbone: "resnet18"
   learning_rate: 0.001
   check_limits: true # ограничение на количество параметров и количество математических операций
+  input_features: ${data.n_mels}
 
 training:
   max_epochs: 10
