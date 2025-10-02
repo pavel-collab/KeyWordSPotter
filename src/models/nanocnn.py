@@ -14,7 +14,7 @@ class NanoCNN(nn.Module):
         )
         # Заменяем классификатор на адаптивный
         self.classifier = nn.Sequential(
-            nn.AdaptiveAvgPool1d((1, 1)),  # Автоматически преобразует любой вход в 1x1
+            nn.AdaptiveAvgPool1d(1),  # Автоматически преобразует любой вход в 1x1
             nn.Flatten(),
             nn.Linear(4, 8),  # Теперь на вход идет 4 канала (выход последнего Conv2d)
             nn.ReLU(inplace=True),

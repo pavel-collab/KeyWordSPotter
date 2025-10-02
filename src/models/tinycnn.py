@@ -16,7 +16,7 @@ class TinyCNN(nn.Module):
         )
         # Заменяем классификатор на адаптивный
         self.classifier = nn.Sequential(
-            nn.AdaptiveAvgPool1d((1, 1)),  # Автоматически преобразует любой вход в 1x1
+            nn.AdaptiveAvgPool1d(1),  # Автоматически преобразует любой вход в 1x1
             nn.Flatten(),
             nn.Dropout(0.5),
             nn.Linear(16, 32),  # Теперь на вход идет 16 каналов (выход последнего Conv2d)
