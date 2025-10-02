@@ -27,14 +27,6 @@ def main(cfg: DictConfig):
     # Загрузка модели из чекпоинта
     checkpoint_path = Path(cfg.onnx.checkpoint_path)
     assert(checkpoint_path.exists())
-
-    # model = KeywordSpotter.load_from_checkpoint(
-    #     checkpoint_path, 
-    #     input_dim=input_dim, 
-    #     output_dim=output_dim,
-    #     num_classes=cfg.model.num_classes,
-    #     backbone=cfg.model.backbone
-    # )
     
     model = KeywordSpotter(
         num_classes=cfg.model.num_classes,
@@ -50,10 +42,7 @@ def main(cfg: DictConfig):
     model.eval()
 
     # Создание примера входных данных
-    # Actually, model is waiting for a 4d data input:
-    # 3d audio tensor data and the batch of such 3d examples,
-    # the result is a 4d data
-    example_input = torch.randn(input_dim)[None, :, :, :]
+    example_input = torch.randn(input_dim)
 
     # Экспорт в ONNX
     onnx_path = Path(cfg.onnx.save_path)

@@ -24,7 +24,8 @@ def main(cfg: DictConfig):
     model = KeywordSpotter(
         num_classes=cfg.model.num_classes,
         backbone=cfg.model.backbone,
-        learning_rate=cfg.model.learning_rate
+        learning_rate=cfg.model.learning_rate,
+        in_features=cfg.model.in_features,
     )
     
     data_module = AudioDataModule(cfg.data)
@@ -41,14 +42,19 @@ def main(cfg: DictConfig):
         # the second one is a batch of labels (batch[1]) -- one dimention tensor
         # So, here to obtain a shape of input data, we have to take the batch of data batch[0]
         # and next take the first element in this batch -- batch[0][0]
-        input_dim = batch[0][0].shape
+        # input_dim = batch[0][0].shape
+        
+        ## We check the number of MAC only on one element (batch_size = 1),
+        ## but train model on the batch_size != 1
+        ## in the input_dim we finally have to have 3 dimention
+        if batch[0].size(0) != 1:
+            input_dim = batch[0][0][None, :, :].shape
+        else:
+            input_dim = batch[0].shape            
         break
     
     # Создание примера входных данных
-    # Actually, model is waiting for a 4d data input:
-    # 3d audio tensor data and the batch of such 3d examples,
-    # the result is a 4d data
-    sample_inputs = torch.randn(input_dim)[None, :, :, :]
+    sample_inputs = torch.randn(input_dim)
     
     macs, params = thop.profile(
         # here we have to use a backbone model with classification head, not a pytorch loghtning wrapper
@@ -64,7 +70,7 @@ def main(cfg: DictConfig):
             local_logger.critical(f"The number of multiply-accumulate operations for model {cfg.model.backbone} is grater than available limit {macs}>1e6")
             return
         if params > 1e4:
-            local_logger.critical(f"The number of parameters for model {cfg.model.backbone} is grater than available limit {macs}>1e6")
+            local_logger.critical(f"The number of parameters for model {cfg.model.backbone} is grater than available limit {macs}>1e4")
             return
 
     # Тренер
