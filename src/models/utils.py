@@ -3,6 +3,7 @@ from src.models.baselinecnn import Conv1dNet
 from src.models.microcnn import MicroCNN
 from src.models.nanocnn import NanoCNN
 from src.models.tinycnn import TinyCNN
+from src.models.customcnn import CustomNet
 
 model_map = {
     "resnet8": ResNetBackbone,
@@ -12,5 +13,6 @@ model_map = {
     "micro_cnn": MicroCNN,
     "nano_cnn": NanoCNN,
     "tiny_cnn": TinyCNN,
-    "baseline": Conv1dNet
+    "baseline": Conv1dNet,
+    "customnet": CustomNet
 }
