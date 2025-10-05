@@ -8,8 +8,8 @@ model_map = {
     # "resnet18": ResNet18Backbone,
     # "squeezenet1_0": SqueezeNet1Backbone,
     # "mobilenet_v3_small": MobileNetV3Backbone,
-    "micro_cnn": MicroCNN,
-    "nano_cnn": NanoCNN,
-    "tiny_cnn": TinyCNN,
-    "baseline": Conv1dNet
+    "MicroCNN": MicroCNN,
+    "NanoCNN": NanoCNN,
+    "TinyCNN": TinyCNN,
+    "Conv1dNet": Conv1dNet
 }
