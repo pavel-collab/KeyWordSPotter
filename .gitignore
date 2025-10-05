@@ -8,3 +8,5 @@ logs
 saved_models
 submission.csv
 local_log.log
+.idea
+.ipynb_checkpoints

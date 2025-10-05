@@ -5,9 +5,9 @@ from src.models.nanocnn import NanoCNN
 from src.models.tinycnn import TinyCNN
 
 model_map = {
-    "resnet18": ResNet18Backbone,
-    "squeezenet1_0": SqueezeNet1Backbone,
-    "mobilenet_v3_small": MobileNetV3Backbone,
+    # "resnet18": ResNet18Backbone,
+    # "squeezenet1_0": SqueezeNet1Backbone,
+    # "mobilenet_v3_small": MobileNetV3Backbone,
     "micro_cnn": MicroCNN,
     "nano_cnn": NanoCNN,
     "tiny_cnn": TinyCNN,

@@ -1,0 +1,13 @@
+torch
+torchvision
+torchaudio
+pytorch-lightning
+omegaconf
+thop
+onnx
+pandas
+seaborn
+matplotlib
+scikit-learn
+hydra-core
+tensorboard
