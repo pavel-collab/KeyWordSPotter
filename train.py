@@ -7,6 +7,7 @@ from src.models.module import KeywordSpotter
 from src.dataset.module import AudioDataModule
 from pytorch_lightning import seed_everything
 import torch
+from utils import check_params
 
 import warnings
 
@@ -20,6 +21,26 @@ warnings.filterwarnings('ignore', category=UserWarning)
 def main(cfg: DictConfig):
     seed_everything(314, workers=True)
     
+    if cfg.pipeline.check_params:
+        errors = check_params(
+            sample_rate=cfg.data.sample_rate,
+            n_fft=cfg.data.n_fft,
+            win_length=cfg.data.win_length,
+            hop_length=cfg.data.hop_length,
+            n_mels=cfg.data.n_mels
+        )
+
+        if len(errors) != 0:
+            header_str = f"Params: sample_rate={cfg.data.sample_rate}, " \
+                        f"n_fft={cfg.data.n_fft}, " \
+                        f"win_length={cfg.data.win_length}, " \
+                        f"hop_length={cfg.data.hop_length}, " \
+                        f"n_mels={cfg.data.n_mels}" \
+                        " "
+            for error in errors:
+                local_logger.critical(header_str + error)
+                return
+
     # Инициализация
     model = KeywordSpotter(
         num_classes=cfg.model.num_classes,
@@ -65,7 +86,7 @@ def main(cfg: DictConfig):
     local_logger.info(f"MACs: {macs}")
     local_logger.info(f"Params: {params}")
     
-    if cfg.model.check_limits:
+    if cfg.pipeline.check_limits:
         if macs > 1e6:
             local_logger.critical(f"The number of multiply-accumulate operations for model {cfg.model.backbone} is grater than available limit {macs}>1e6")
             return

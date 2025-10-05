@@ -31,3 +31,27 @@ def omegaconf_extension(func):
         # Вызываем оригинальную функцию
         return func(*args, **kwargs)
     return wrapper
+
+# Скрипт проверяет корректное сочетание параметров для цифровой обработки аудио
+def check_params(sample_rate, n_fft, win_length, hop_length, n_mels, f_min=0, f_max=None): 
+    errors = []
+
+    if win_length > n_fft:
+        errors.append(f"win_length={win_length} can't be grater n_fft={n_fft}")
+
+    if hop_length <= 0:
+        errors.append("hop_length have to be > 0")
+
+    if n_mels > 1 + n_fft // 2:
+        errors.append(f"n_mels={n_mels} too high (max value {1 + n_fft // 2})")
+
+    nyquist = sample_rate / 2
+    if f_max is None:
+        f_max = nyquist
+    if f_max > nyquist:
+        errors.append(f"f_max={f_max} is grater than Nyquist freq {nyquist}")
+
+    # win_ms = win_length / sample_rate * 1000
+    # hop_ms = hop_length / sample_rate * 1000
+
+    return errors
