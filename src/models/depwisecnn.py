@@ -99,34 +99,37 @@ class MobileNetV1_1D(nn.Module):
                 nn.init.normal_(m.weight, 0, 0.01)
                 nn.init.constant_(m.bias, 0)
 
+
 class SimpleMobileNet1D(nn.Module):
-    def __init__(self, num_classes=10, alpha=1.0, in_features=64):
+    def __init__(self, num_classes=10, alpha=0.15, in_features=64):
         super(SimpleMobileNet1D, self).__init__()
-        
-        first_channels = int(32 * alpha)
+
+        first_channels = max(8, int(32 * alpha))
         self.features = nn.Sequential(
-            # Первый слой для временных последовательностей
-            nn.Conv1d(in_features, first_channels, 3, stride=1, padding=1, bias=False),
+            nn.Conv1d(in_features, first_channels, 3, stride=2, padding=1, bias=False),
             nn.BatchNorm1d(first_channels),
             nn.ReLU(inplace=True),
-            
-            # Упрощенная конфигурация блоков
-            DepthwiseSeparableConv1D(first_channels, int(64 * alpha), stride=1),
-            DepthwiseSeparableConv1D(int(64 * alpha), int(128 * alpha), stride=2),
-            DepthwiseSeparableConv1D(int(128 * alpha), int(256 * alpha), stride=2),
-            DepthwiseSeparableConv1D(int(256 * alpha), int(512 * alpha), stride=2),
+
+            # Слегка уменьшены каналы в блоках
+            DepthwiseSeparableConv1D(first_channels, max(14, int(56 * alpha)), stride=1),  # было 16
+            DepthwiseSeparableConv1D(max(14, int(56 * alpha)), max(28, int(112 * alpha)), stride=2),  # было 32
+            DepthwiseSeparableConv1D(max(28, int(112 * alpha)), max(42, int(224 * alpha)), stride=2),  # было 48
+            DepthwiseSeparableConv1D(max(42, int(224 * alpha)), max(56, int(448 * alpha)), stride=2),  # было 64
         )
-        
+
         self.avg_pool = nn.AdaptiveAvgPool1d(1)
-        self.classifier = nn.Linear(int(512 * alpha), num_classes)
-    
+        self.dropout = nn.Dropout(0.3)
+        self.classifier = nn.Sequential(
+            nn.Linear(max(56, int(448 * alpha)), 28),  # уменьшено с 32 до 28
+            nn.ReLU(inplace=True),
+            nn.Dropout(0.2),
+            nn.Linear(28, num_classes)
+        )
+
     def forward(self, x):
-        # # Если вход двумерный (batch, n_mels, n_times), добавляем dimension для каналов
-        # if x.dim() == 2:
-        #     x = x.unsqueeze(1)  # (batch, 1, n_times)
-        
         x = self.features(x)
         x = self.avg_pool(x)
         x = x.view(x.size(0), -1)
+        x = self.dropout(x)
         x = self.classifier(x)
         return x
