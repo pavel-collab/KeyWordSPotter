@@ -84,7 +84,7 @@ def main():
     """
     # Конфигурация
     SCRIPT_TO_RUN = "train.py"
-    BASE_ARGUMENTS = ["data.num_workers=4", "model.backbone=micro_cnn"]
+    BASE_ARGUMENTS = ["data.num_workers=4", "model.backbone=MicroCNN"]
 
     # Генерируем комбинации параметров
     parameter_combinations = generate_parameter_combinations()

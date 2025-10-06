@@ -8,11 +8,11 @@
 # python3 ./train.py data.num_workers=4 model.backbone=nano_cnn
 # python3 ./train.py data.num_workers=4 model.backbone=tiny_cnn
 
-telert run --label "train model with backbone micro_cnn $(date)" python3 ./train.py data.num_workers=4 model.backbone=micro_cnn
+telert run --label "train model with backbone micro_cnn $(date)" python3 ./train.py data.num_workers=4 model.backbone=MicroCNN
 sleep 5
-telert run --label "train model with backbone nano_cnn $(date)" python3 ./train.py data.num_workers=4 model.backbone=nano_cnn
+telert run --label "train model with backbone nano_cnn $(date)" python3 ./train.py data.num_workers=4 model.backbone=NanoCNN
 sleep 5
-telert run --label "train model with backbone tiny_cnn $(date)" python3 ./train.py data.num_workers=4 model.backbone=tiny_cnn
+telert run --label "train model with backbone tiny_cnn $(date)" python3 ./train.py data.num_workers=4 model.backbone=TinyCNN
 # sleep 5
 # telert run --label "train model with backbone baseline $(date)" python3 ./train.py data.num_workers=4 model.backbone=baseline
 # sleep 5
