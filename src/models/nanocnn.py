@@ -3,24 +3,37 @@ import torch.nn as nn
 class NanoCNN(nn.Module):
     def __init__(self, num_classes=2, in_features: int = 64):
         super(NanoCNN, self).__init__()
+
         self.features = nn.Sequential(
-            nn.Conv1d(in_features, 2, kernel_size=3, padding=1),
+            # Первый блок
+            nn.Conv1d(in_features, 12, kernel_size=3, padding=1),
+            nn.BatchNorm1d(12),
             nn.ReLU(inplace=True),
             nn.MaxPool1d(kernel_size=2, stride=2),
-            
-            nn.Conv1d(2, 4, kernel_size=3, padding=1),
+
+            # Второй блок
+            nn.Conv1d(12, 24, kernel_size=3, padding=1),
+            nn.BatchNorm1d(24),
             nn.ReLU(inplace=True),
             nn.MaxPool1d(kernel_size=2, stride=2),
+
+            # Третий блок
+            nn.Conv1d(24, 48, kernel_size=3, padding=1),
+            nn.BatchNorm1d(48),
+            nn.ReLU(inplace=True),
+            nn.MaxPool1d(kernel_size=2, stride=2),
+
+            # Глобальное усреднение
+            nn.AdaptiveAvgPool1d(1)
         )
-        # Заменяем классификатор на адаптивный
+
+        # Минималистичный классификатор
         self.classifier = nn.Sequential(
-            nn.AdaptiveAvgPool1d(1),  # Автоматически преобразует любой вход в 1x1
             nn.Flatten(),
-            nn.Linear(4, 8),  # Теперь на вход идет 4 канала (выход последнего Conv2d)
-            nn.ReLU(inplace=True),
-            nn.Linear(8, num_classes)
+            nn.Dropout(0.2),
+            nn.Linear(48, num_classes)  # Прямо из 48 каналов в классы
         )
-    
+
     def forward(self, x):
         x = self.features(x)
         x = self.classifier(x)
