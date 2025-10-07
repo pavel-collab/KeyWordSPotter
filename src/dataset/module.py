@@ -10,7 +10,7 @@ class AudioDataModule(pl.LightningDataModule):
 
     def setup(self, stage=None):
         self.train_dataset = AudioDataset(
-            os.path.join(self.config.dataset_path, "train/manifest_train.csv"),
+            os.path.join(self.config.dataset_path, f"train/{self.config.train_manifest_name}"),
             sample_rate=self.config.sample_rate,
             n_fft=self.config.n_fft,
             hop_length=self.config.hop_length,
