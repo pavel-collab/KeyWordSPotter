@@ -7,7 +7,7 @@ mv keyword-spotting-mipt-2025 data
 
 ## Data augmantation
 ```commandline
-python3 augmantation.py -m ./data/train/manifest_train.csv
+python3 augmentation.py -m ./data/train/manifest_train.csv
 ```
 This step is not nesessary. If you use augmentation, don't
 forget to set a new path to a train manifest.

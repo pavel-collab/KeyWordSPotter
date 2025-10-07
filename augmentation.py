@@ -6,6 +6,7 @@ import pandas as pd
 import argparse
 from pathlib import Path
 import warnings
+from tqdm import tqdm
 
 # turn off the UserWarnings because lots of them are talking about
 # library function refactoring, last or future deprecations
@@ -27,7 +28,7 @@ def augment_dataset(data_path: Path, audio_files: list, labels: list, num_augmen
     else:
         output_dir = data_path / 'augmented'
     
-    for i, (audio_file, label) in enumerate(zip(audio_files, labels)):
+    for i, (audio_file, label) in tqdm(enumerate(zip(audio_files, labels)), desc="Data augmentation"):
         audio_file_path = data_path / Path(audio_file)
         
         # Загрузка аудиофайла
