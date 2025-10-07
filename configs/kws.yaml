@@ -10,6 +10,7 @@ data:
   batch_size: 32
   num_workers: 1
   dataset_path: "./data"
+  train_manifest_name: "manifest_train.csv" # it could be another file, for example if we're using augmantation
 
 model:
   num_classes: 5

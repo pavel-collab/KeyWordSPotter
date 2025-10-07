@@ -5,6 +5,13 @@ unzip keyword-spotting-mipt-2025.zip
 mv keyword-spotting-mipt-2025 data
 ```
 
+## Data augmantation
+```commandline
+python3 augmentation.py -m ./data/train/manifest_train.csv
+```
+This step is not nesessary. If you use augmentation, don't
+forget to set a new path to a train manifest.
+
 ## Train the model
 ```
 python3 train.py
