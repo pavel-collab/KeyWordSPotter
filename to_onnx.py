@@ -8,6 +8,12 @@ import os
 from src.models.module import KeywordSpotter
 from src.dataset.module import AudioDataModule
 
+import warnings
+
+# turn off the UserWarnings because lots of them are talking about 
+# library function refactoring, last or future deprecations
+warnings.filterwarnings('ignore', category=UserWarning)
+
 @hydra.main(version_base=None, config_path="./configs", config_name="kws.yaml")
 def main(cfg: DictConfig):
     data_module = AudioDataModule(cfg.data)
@@ -20,7 +26,15 @@ def main(cfg: DictConfig):
         # the second one is a batch of labels (batch[1]) -- one dimention tensor
         # So, here to obtain a shape of input data, we have to take the batch of data batch[0]
         # and next take the first element in this batch -- batch[0][0]
-        input_dim = batch[0][0].shape
+        # input_dim = batch[0][0].shape
+        
+        ## We check the number of MAC only on one element (batch_size = 1),
+        ## but train model on the batch_size != 1
+        ## in the input_dim we finally have to have 3 dimention
+        if batch[0].size(0) != 1:
+            input_dim = batch[0][0][None, :, :].shape
+        else:
+            input_dim = batch[0].shape            
         break
     output_dim = cfg.model.num_classes
 

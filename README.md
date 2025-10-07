@@ -21,7 +21,7 @@ tensorboard --logdir ./logs
 ATTENTION: notice, that runa = is a special runa for this command. So, we have to masking it by charackter \ in the line.
 It can be a little bit uncomfortable. Maybe, we can save checkpoint in a different format.
 ```
-python3 to_onnx.py onnx.checkpoint_path=./logs/keyword_spotter/version_0/checkpoints/best_epoch\=08_val_acc\=0.90.ckpt
+python3 to_onnx.py onnx.checkpoint_path=./logs/keyword_spotter/version_0/checkpoints/best_epoch\=08_val_acc\=0.90.ckpt model.backbone=SimpleMobileNet1D
 ```
 
 ## Visualise a model graph via netron

@@ -66,6 +66,7 @@ class AudioDataset(Dataset):
                 mel_spec = mel_spec[0]
                 return mel_spec, torch.tensor(label, dtype=torch.long)
             else:
+                mel_spec = mel_spec[0]
                 return mel_spec 
         
         except Exception as e:

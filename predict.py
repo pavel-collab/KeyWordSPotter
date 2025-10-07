@@ -53,13 +53,7 @@ def onnx_inference(test_dataloader, onnx_model_path):
     input_name = ort_session.get_inputs()[0].name
     output_name = ort_session.get_outputs()[0].name
     
-    print(f"[DEBUG] Input name: {input_name}")
-    print(f"[DEBUG] Output name: {output_name}")
-    
     all_predictions = []
-    
-    print(f"[DEBUG] test dataset size {len(test_dataloader.dataset)}")
-    print(f"[DEBUG] test dataloader bacth size {len(test_dataloader.dataset) // len(test_dataloader)}")
     
     # Переключаемся в режим инференса
     with torch.no_grad():
