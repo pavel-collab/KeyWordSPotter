@@ -2,6 +2,9 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 
+import ssl
+ssl._create_default_https_context = ssl._create_stdlib_context
+
 class ResNet18Backbone(nn.Module):
     def __init__(self, num_classes: int = 2, in_features: int = 1):
         super().__init__()
