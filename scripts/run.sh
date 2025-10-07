@@ -51,7 +51,7 @@ telert run --label "train model with backbone TinyCNN $(date)" python3 ./train.p
 sleep 5
 telert run --label "train model with backbone TinyCNN $(date)" python3 ./train.py data.num_workers=4 model.backbone=TinyCNN data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=32
 sleep 5
-telert run --label "train model with backbone TinyCNN $(date)" python3 ./train.py data.num_workers=4 model.backbone=TinyCNN data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
+# telert run --label "train model with backbone TinyCNN $(date)" python3 ./train.py data.num_workers=4 model.backbone=TinyCNN data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
 sleep 5
 telert run --label "train model with backbone TinyCNN $(date)" python3 ./train.py data.num_workers=4 model.backbone=TinyCNN data.sample_rate=8000 data.n_fft=600 data.hop_length=128 data.win_length=600 data.n_mels=32
 sleep 5
@@ -68,7 +68,7 @@ telert run --label "train model with backbone Conv1dNet $(date)" python3 ./train
 sleep 5
 telert run --label "train model with backbone Conv1dNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=Conv1dNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=32
 sleep 5
-telert run --label "train model with backbone Conv1dNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=Conv1dNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
+# telert run --label "train model with backbone Conv1dNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=Conv1dNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
 sleep 5
 telert run --label "train model with backbone Conv1dNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=Conv1dNet data.sample_rate=8000 data.n_fft=600 data.hop_length=128 data.win_length=600 data.n_mels=32
 sleep 5
@@ -85,7 +85,7 @@ telert run --label "train model with backbone CustomNet $(date)" python3 ./train
 sleep 5
 telert run --label "train model with backbone CustomNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=CustomNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=32
 sleep 5
-telert run --label "train model with backbone CustomNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=CustomNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
+# telert run --label "train model with backbone CustomNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=CustomNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
 sleep 5
 telert run --label "train model with backbone CustomNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=CustomNet data.sample_rate=8000 data.n_fft=600 data.hop_length=128 data.win_length=600 data.n_mels=32
 sleep 5
@@ -102,7 +102,7 @@ telert run --label "train model with backbone MobileNetV1_1D $(date)" python3 ./
 sleep 5
 telert run --label "train model with backbone MobileNetV1_1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=MobileNetV1_1D data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=32
 sleep 5
-telert run --label "train model with backbone MobileNetV1_1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=MobileNetV1_1D data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
+# telert run --label "train model with backbone MobileNetV1_1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=MobileNetV1_1D data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
 sleep 5
 telert run --label "train model with backbone MobileNetV1_1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=MobileNetV1_1D data.sample_rate=8000 data.n_fft=600 data.hop_length=128 data.win_length=600 data.n_mels=32
 sleep 5
@@ -119,7 +119,7 @@ telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3
 sleep 5
 telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SimpleMobileNet1D data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=32
 sleep 5
-telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SimpleMobileNet1D data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
+# telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SimpleMobileNet1D data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
 sleep 5
 telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SimpleMobileNet1D data.sample_rate=8000 data.n_fft=600 data.hop_length=128 data.win_length=600 data.n_mels=32
 sleep 5
@@ -127,19 +127,19 @@ telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3
 sleep 5
 #====================================================================================================
 
-#==============================================SimpleMobileNet1D==============================================
-telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=64
+#==============================================SmallResNet==============================================
+telert run --label "train model with backbone SmallResNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=64
 sleep 5
-telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=64
+telert run --label "train model with backbone SmallResNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=64
 sleep 5
-telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=2000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=32
+telert run --label "train model with backbone SmallResNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=2000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=32
 sleep 5
-telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=32
+telert run --label "train model with backbone SmallResNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=200 data.n_mels=32
 sleep 5
-telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
+# telert run --label "train model with backbone SmallResNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=4000 data.n_fft=400 data.hop_length=128 data.win_length=400 data.n_mels=128
 sleep 5
-telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=8000 data.n_fft=600 data.hop_length=128 data.win_length=600 data.n_mels=32
+telert run --label "train model with backbone SmallResNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet data.sample_rate=8000 data.n_fft=600 data.hop_length=128 data.win_length=600 data.n_mels=32
 sleep 5
-telert run --label "train model with backbone SimpleMobileNet1D $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet
+telert run --label "train model with backbone SmallResNet $(date)" python3 ./train.py data.num_workers=4 model.backbone=SmallResNet
 sleep 5
 #====================================================================================================
