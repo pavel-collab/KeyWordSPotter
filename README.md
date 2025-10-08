@@ -50,10 +50,17 @@ python3 to_onnx.py onnx.checkpoint_path=./logs/keyword_spotter/version_0/checkpo
 netron ./saved_model/model.onnx
 ```
 
+## Validate model
+You can run your saved onnx model on validation dataset and check out the classification report 
+local. To do it run
+```
+python3 ./validate.py onnx.onnx_file_name=<path to onnx model>
+```
+
 ## Make a prediction on the saved onnx model
 Notice: all of the dataloaders have been already set to import test data for prediction.
 ```
-python3 ./predict.py
+python3 ./predict.py onnx.onnx_file_name=<path to onnx model>
 ```
 
 ## Submit prediction to kaggle

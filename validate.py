@@ -1,13 +1,12 @@
-
 import hydra
 from omegaconf import DictConfig
 from pathlib import Path
-import pandas as pd
 from pathlib import Path
+from sklearn.metrics import classification_report 
 
 from src.dataset.module import AudioDataModule
-from src.dataset.utils import label2id
 from utils import onnx_inference, get_predictions_from_logits
+from src.dataset.utils import label2id
 
 @hydra.main(version_base=None, config_path="./configs", config_name="kws.yaml")
 def main(cfg: DictConfig):
@@ -19,24 +18,14 @@ def main(cfg: DictConfig):
         
     data_module = AudioDataModule(cfg.data)
     data_module.setup()
-    test_dataloader = data_module.test_dataloader()
+    val_dataloader = data_module.val_dataloader()
     
     # Выполняем инференс
-    logits = onnx_inference(test_dataloader, onnx_model_path)
+    logits, true_labels = onnx_inference(val_dataloader, onnx_model_path, validation=True)
     predicted_labels, probabilities = get_predictions_from_logits(logits, method='numpy')
     
-    id2label = {label: key for key, label in label2id.items()}
-    
-    predicted_names = [id2label[label] for label in predicted_labels]
-        
-    test_manifest_path = Path(cfg.data.dataset_path)
-    assert(test_manifest_path.exists())
-    test_manifest_path = test_manifest_path / "test" / "manifest.csv"
-    assert(test_manifest_path.exists())
-    
-    test_data_df = pd.read_csv(test_manifest_path)
-    test_data_df['label'] = predicted_names
-    test_data_df[["index", "label"]].to_csv("submission.csv", index=False)
+    class_report = classification_report(true_labels, predicted_labels, target_names=list(label2id.keys()))  
+    print(class_report)  
     
 # Пример использования
 if __name__ == "__main__":
