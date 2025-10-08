@@ -17,6 +17,7 @@ model:
   backbone: "resnet18"
   learning_rate: 0.001
   in_features: ${data.n_mels}
+  student: false # для случая, когда дистилируем модель. В этом случае, дополнительно указываем путь к чекпоинту обученной модели
 
 training:
   max_epochs: 10

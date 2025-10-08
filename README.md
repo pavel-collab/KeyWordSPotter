@@ -16,8 +16,22 @@ forget to set a new path to a train manifest.
 ```
 python3 train.py
 ```
-
 Saved best checkpoint you will find in logs/keyword_spotter/version_n/checkpoints
+
+### Distilation
+There is a special option for distilate small model from large one. For example, we can distilate MicroCNN from 
+ResNet18. To do it, you will do two steps. Firstly you learn large model, for example ResNet18.
+```
+python3 train.py model.backbone=ResNet18Backbone pipeline.check_limits=false
+```
+Don't forget to disable check limits option, overwise your script will fall with error, because large models are out 
+of competition limits (parameters and MACs). After training you need to save checkpoint of your model.
+
+After that you can learn student model, based of large model, you have trained.
+```
+python3 train.py model.student=true onnx.checkpoint_path='./logs/keyword_spotter/version_2/checkpoints/best_epoch\=07_val_acc\=0.91.ckpt'
+```
+Set a path to your large model checkpoint. And don't forget set an option model.student.
 
 ## Check the trian plots via tensorboard
 ```

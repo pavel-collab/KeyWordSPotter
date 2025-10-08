@@ -8,7 +8,7 @@ from src.models.depwisecnn import MobileNetV1_1D, SimpleMobileNet1D
 from src.models.resnet import  SmallResNet
 
 model_map = {
-    # "ResNet18Backbone": ResNet18Backbone,
+    "ResNet18Backbone": ResNet18Backbone,
     # "SqueezeNet1Backbone": SqueezeNet1Backbone,
     # "MobileNetV3Backbone": MobileNetV3Backbone,
     "MicroCNN": MicroCNN,
