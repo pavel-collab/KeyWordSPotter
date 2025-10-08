@@ -3,7 +3,7 @@ from omegaconf import DictConfig
 import thop
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
-from src.models.module import KeywordSpotter
+from src.models.module import KeywordSpotter, KDLitModule
 from src.dataset.module import AudioDataModule
 from pytorch_lightning import seed_everything
 import torch
@@ -42,12 +42,23 @@ def main(cfg: DictConfig):
                 return
 
     # Инициализация
-    model = KeywordSpotter(
-        num_classes=cfg.model.num_classes,
-        backbone=cfg.model.backbone,
-        learning_rate=cfg.model.learning_rate,
-        in_features=cfg.model.in_features,
-    )
+    if not cfg.model.student:
+        model = KeywordSpotter(
+            num_classes=cfg.model.num_classes,
+            backbone=cfg.model.backbone,
+            learning_rate=cfg.model.learning_rate,
+            in_features=cfg.model.in_features,
+        )
+    elif cfg.onnx.checkpoint_path is not None:
+        model = KDLitModule(
+            num_classes=cfg.model.num_classes,
+            checkpoint_path=cfg.onnx.checkpoint_path,
+            lr=cfg.model.learning_rate,
+            in_features=cfg.model.in_features,
+        )
+    else:
+        local_logger.critical("you're trying to train student model, but checkpoint_path is not specified")
+        return
     
     data_module = AudioDataModule(cfg.data)
     logger = TensorBoardLogger("logs", name="keyword_spotter")
@@ -77,9 +88,14 @@ def main(cfg: DictConfig):
     # Создание примера входных данных
     sample_inputs = torch.randn(input_dim)
     
+    if not cfg.model.student:
+        torch_model = model.model
+    else:
+        torch_model = model.student
+
     macs, params = thop.profile(
         # here we have to use a backbone model with classification head, not a pytorch loghtning wrapper
-        model.model, 
+        torch_model, 
         inputs=(sample_inputs,),
     )
     
