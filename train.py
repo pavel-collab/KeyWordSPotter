@@ -49,10 +49,10 @@ def main(cfg: DictConfig):
             learning_rate=cfg.model.learning_rate,
             in_features=cfg.model.in_features,
         )
-    elif cfg.onnx.checkpoint_path is not None:
+    elif cfg.distilation.teacher_checkpoint_path is not None:
         model = KDLitModule(
             num_classes=cfg.model.num_classes,
-            checkpoint_path=cfg.onnx.checkpoint_path,
+            teacher_checkpoint_path=cfg.distilation.teacher_checkpoint_path,
             lr=cfg.model.learning_rate,
             in_features=cfg.model.in_features,
         )

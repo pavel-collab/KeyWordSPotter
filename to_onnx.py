@@ -5,7 +5,7 @@ from pathlib import Path
 import onnx
 import os
 
-from src.models.module import KeywordSpotter
+from src.models.module import KeywordSpotter, KDLitModule
 from src.dataset.module import AudioDataModule
 
 import warnings
@@ -42,11 +42,19 @@ def main(cfg: DictConfig):
     checkpoint_path = Path(cfg.onnx.checkpoint_path)
     assert(checkpoint_path.exists())
     
-    model = KeywordSpotter(
-        num_classes=cfg.model.num_classes,
-        backbone=cfg.model.backbone,
-        learning_rate=cfg.model.learning_rate
-    )
+    if not cfg.model.student:
+        model = KeywordSpotter(
+            num_classes=cfg.model.num_classes,
+            backbone=cfg.model.backbone,
+            learning_rate=cfg.model.learning_rate
+        )
+    else:
+        model = KDLitModule(
+            num_classes=cfg.model.num_classes,
+            teacher_checkpoint_path=None, # set teacher checkpoint to None, cz here we don't need to use it
+            lr=cfg.model.learning_rate,
+            in_features=cfg.model.in_features,
+        )
     # Ручная загрузка state_dict
     checkpoint = torch.load(checkpoint_path)
     state_dict = checkpoint['state_dict']

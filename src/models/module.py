@@ -61,27 +61,30 @@ from src.models.microcnn import MicroCNN
 # from src.models.backbone import ResNet18Backbone
 
 class KDLitModule(pl.LightningModule):
-    def __init__(self, num_classes: int = 2, checkpoint_path: str = None, in_features: int = 1,
+    def __init__(self, num_classes: int = 2, teacher_checkpoint_path: str = None, in_features: int = 1,
                  lr: float = 1e-3, weight_decay: float = 1e-2,
                  alpha: float = 0.65, T: float = 3.0, label_smoothing: float = 0.1):
         super().__init__()
         self.save_hyperparameters(ignore=["student","teacher"])
 
         #! temporary hardcode student arch 
-        self.student = MicroCNN(in_features=64, num_classes=5)
+        self.student = MicroCNN(in_features=64, num_classes=num_classes)
         
-        #! temporary hardcode teacher arch
         TModule = KeywordSpotter(num_classes=num_classes, backbone="ResNet18Backbone")
-        ckpt = torch.load(checkpoint_path, map_location="cpu", weights_only = False)
-        TModule.load_state_dict(
-            {k: v for k, v in ckpt["state_dict"].items() if "total" not in k}
-        )
+        #! temporary hardcode teacher arch
+        if teacher_checkpoint_path is not None:
+            ckpt = torch.load(teacher_checkpoint_path, map_location="cpu", weights_only = False)
+            TModule.load_state_dict(
+                {k: v for k, v in ckpt["state_dict"].items() if "total" not in k}
+            )
+        # using it without checkpoitn is relevant if we're in evaluation mode, when we need to use only student model
 
         self.teacher = TModule.model.eval()
         for p in self.teacher.parameters():
             p.requires_grad_(False)
 
-        self.accuracy = Accuracy(task="multiclass", num_classes=num_classes)
+        self.train_accuracy = Accuracy(task="multiclass", num_classes=num_classes)
+        self.val_accuracy = Accuracy(task="multiclass", num_classes=num_classes)
 
         self.val_loss = torch.nn.CrossEntropyLoss()
 
@@ -89,9 +92,7 @@ class KDLitModule(pl.LightningModule):
         self.kl = nn.KLDivLoss(reduction="batchmean")
 
     def forward(self, x):
-        logprobs = self.student(x)
-        preds = logprobs.argmax(1)
-        return logprobs
+        return self.student(x)
 
     def kd_loss(self, s_logits, t_logits):
         T = self.hparams.T
@@ -115,7 +116,7 @@ class KDLitModule(pl.LightningModule):
         log = {
             "train/loss": loss,
             "lr": self.optimizers().param_groups[0]["lr"],
-            "train/accuracy": self.accuracy(s_logits, y),
+            "train/accuracy": self.train_accuracy(s_logits, y),
         }
 
         self.log_dict(log, on_step=True)
@@ -136,12 +137,12 @@ class KDLitModule(pl.LightningModule):
 
         loss = F.cross_entropy(logits, y)
         # self.valid_acc.update(preds, labels)
-        val_acc = self.accuracy(logits, y)
+        val_acc = self.val_accuracy(logits, y)
 
         self.log("val_loss", loss, prog_bar=True)
         self.log("val_acc", val_acc, prog_bar=True)
 
-        return {"loss": loss}
+        return {"val_loss": loss, "val_accuracy": val_acc}
 
     def configure_optimizers(self):
         wd = 0.01

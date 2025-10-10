@@ -37,3 +37,6 @@ onnx:
 pipeline:
   check_limits: true # ограничение на количество параметров и количество математических операций
   check_params: true # проверка параметров цифровой обработки
+
+distilation:
+  teacher_checkpoint_path: ??? # путь к чекпоинту обученной модели

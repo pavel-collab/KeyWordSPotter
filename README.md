@@ -29,9 +29,12 @@ of competition limits (parameters and MACs). After training you need to save che
 
 After that you can learn student model, based of large model, you have trained.
 ```
-python3 train.py model.student=true onnx.checkpoint_path='./logs/keyword_spotter/version_2/checkpoints/best_epoch\=07_val_acc\=0.91.ckpt'
+python3 train.py model.student=true distilation.teacher_checkpoint_path='./logs/keyword_spotter/version_2/checkpoints/best_epoch\=07_val_acc\=0.91.ckpt'
 ```
 Set a path to your large model checkpoint. And don't forget set an option model.student.
+
+NOTE: when you will convert your saved chckpoint to onnx model, don't forget to set a  model.student=true option,
+because, it will triggert script to import pytorch lightning wrapper for student model.
 
 ## Check the trian plots via tensorboard
 ```
