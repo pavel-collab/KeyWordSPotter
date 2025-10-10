@@ -126,7 +126,7 @@ class AudioAugmentation:
         
         return masked_waveform
     
-    def add_noise(self, waveform, noise_level=0.005):
+    def add_noise(self, waveform, noise_level=1e-6):
         """Добавление гауссового шума"""
         noise = torch.randn_like(waveform) * noise_level
         return waveform + noise

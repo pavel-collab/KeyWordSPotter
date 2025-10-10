@@ -40,14 +40,14 @@ def augment_dataset(data_path: Path, audio_files: list, labels: list, num_augmen
             
             # Случайный выбор методов аугментации
             augmentations = random.sample([
-                'cyclic_shift',
+                # 'cyclic_shift', #! it can break the system
                 'time_mask', 
-                # 'frequency_mask',
-                # 'add_noise',
-                # 'change_speed',
-                # 'pitch_shift',
-                # 'time_stretch'
-            ], random.randint(1, 2))  # Применяем 1-2 случайные аугментации
+                # 'frequency_mask', #! bad option
+                'add_noise',
+                # 'change_speed', #! bad option
+                # 'pitch_shift', #! bad option
+                'time_stretch'
+            ], random.randint(1, 2))  # Применяем 1-2 случайную аугментацию
             
             for aug_method in augmentations:
                 if aug_method == 'cyclic_shift':
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     # Аугментация датасета
     augmented_files, augmented_labels = augment_dataset(
-        manifest_path.parent, audio_files, labels, num_augmentations=3
+        manifest_path.parent, audio_files, labels, num_augmentations=1
     )
     
     print(f"Создано {len(augmented_labels)} аугментированных файлов")
