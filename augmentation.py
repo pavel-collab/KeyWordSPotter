@@ -46,7 +46,7 @@ def augment_dataset(data_path: Path, audio_files: list, labels: list, num_augmen
                 'add_noise',
                 # 'change_speed', #! bad option
                 # 'pitch_shift', #! bad option
-                'time_stretch'
+                # 'time_stretch'
             ], random.randint(1, 2))  # Применяем 1-2 случайную аугментацию
             
             for aug_method in augmentations:

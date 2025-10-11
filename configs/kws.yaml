@@ -14,7 +14,7 @@ data:
 
 model:
   num_classes: 5
-  backbone: "resnet18"
+  backbone: ???
   learning_rate: 0.001
   in_features: ${data.n_mels}
   student: false # для случая, когда дистилируем модель. В этом случае, дополнительно указываем путь к чекпоинту обученной модели
